@@ -1,97 +1,106 @@
 import 'package:flutter/material.dart';
+import 'package:termo/dicionario.dart';
 
 void main() {
-  runApp(const MaterialApp(home: MyApp(), debugShowCheckedModeBanner: false));
+  runApp(const MaterialApp(home: MeuApp(), debugShowCheckedModeBanner: false));
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+// Classe principal do app com estado (StatefulWidget)
+class MeuApp extends StatefulWidget {
+  const MeuApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<MeuApp> createState() => _MeuAppEstado();
 }
 
-class LetraCelula {
+// Representa uma célula com uma letra e suas cores
+class CelulaLetra {
   String letra;
-  Color cor;
+  Color corFundo;
   Color corBorda;
 
-  LetraCelula(this.letra, this.cor, this.corBorda);
+  CelulaLetra(this.letra, this.corFundo, this.corBorda);
 }
 
-class _MyAppState extends State<MyApp> {
-  final String palavraSorteada = "FACIL";
-  late List<String> sorteadaSeparada;
+class _MeuAppEstado extends State<MeuApp> {
+  final String palavraSorteada = sortearPalavra();
+  late List<String> letrasSorteadasSeparadas;
 
-  List<List<LetraCelula>> board = List.generate(
+  // Tabuleiro com 6 linhas e 5 colunas
+  List<List<CelulaLetra>> tabuleiro = List.generate(
     6,
     (_) => List.generate(
       5,
-      (_) => LetraCelula('', Color(0xFF605458), Color(0xFF605458)),
+      (_) => CelulaLetra('', const Color(0xFF605458), const Color(0xFF605458)),
     ),
   );
 
-  int currentRow = 0;
-  int currentCol = 0;
+  int linhaAtual = 0;
+  int colunaAtual = 0;
 
   @override
   void initState() {
     super.initState();
-    sorteadaSeparada = palavraSorteada.toUpperCase().split('');
+    letrasSorteadasSeparadas = palavraSorteada.toUpperCase().split('');
   }
 
-  void teclaPressionada(String tecla) {
+  void aoPressionarTecla(String tecla) {
     setState(() {
-      if (currentRow >= 6) return;
+      if (linhaAtual >= 6) return;
 
       if (tecla == '⌫') {
-        if (currentCol > 0) {
-          currentCol--;
-          board[currentRow][currentCol] = LetraCelula(
+        if (colunaAtual > 0) {
+          colunaAtual--;
+          tabuleiro[linhaAtual][colunaAtual] = CelulaLetra(
             '',
-            Color(0xFF605458),
-            Color(0xFF605458),
+            const Color(0xFF605458),
+            const Color(0xFF605458),
           );
         }
       } else if (tecla == 'ENTER') {
-        if (currentCol == 5) {
+        if (colunaAtual == 5) {
           verificarPalavra();
         }
-      } else if (currentCol < 5) {
-        board[currentRow][currentCol] = LetraCelula(
+      } else if (colunaAtual < 5) {
+        tabuleiro[linhaAtual][colunaAtual] = CelulaLetra(
           tecla,
           const Color(0xFF87727A),
-          Color(0xFF605458),
+          const Color(0xFF605458),
         );
-        currentCol++;
+        colunaAtual++;
       }
     });
   }
 
   void verificarPalavra() {
-    List<String> chute = board[currentRow].map((c) => c.letra).toList();
-    List<String> tempSorteada = List.from(sorteadaSeparada);
-    List<Color> cores = List.filled(5, Color(0xFF302A2C));
+    List<String> tentativa = tabuleiro[linhaAtual].map((c) => c.letra).toList();
+    List<String> copiaPalavra = List.from(letrasSorteadasSeparadas);
+    List<Color> cores = List.filled(5, const Color(0xFF302A2C));
 
+    // Marca letras corretas na posição correta (verde)
     for (int i = 0; i < 5; i++) {
-      if (chute[i] == tempSorteada[i]) {
-        cores[i] = Color(0xFF4BA294);
-        tempSorteada[i] = '';
+      if (tentativa[i] == copiaPalavra[i]) {
+        cores[i] = const Color(0xFF4BA294);
+        copiaPalavra[i] = '';
       }
     }
 
+    // Marca letras corretas na posição errada (amarelo)
     for (int i = 0; i < 5; i++) {
-      if (cores[i] != Color(0xFF4BA294) && tempSorteada.contains(chute[i])) {
-        cores[i] = Color(0xFFCFAE6C);
-        tempSorteada[tempSorteada.indexOf(chute[i])] = '';
+      if (cores[i] != const Color(0xFF4BA294) &&
+          copiaPalavra.contains(tentativa[i])) {
+        cores[i] = const Color(0xFFCFAE6C);
+        copiaPalavra[copiaPalavra.indexOf(tentativa[i])] = '';
       }
     }
 
+    // Atualiza o tabuleiro com as cores da tentativa
     for (int i = 0; i < 5; i++) {
-      board[currentRow][i] = LetraCelula(chute[i], cores[i], cores[i]);
+      tabuleiro[linhaAtual][i] = CelulaLetra(tentativa[i], cores[i], cores[i]);
     }
 
-    if (cores.every((c) => c == Color(0xFF4BA294))) {
+    // Verifica vitória
+    if (cores.every((c) => c == const Color(0xFF4BA294))) {
       showDialog(
         context: context,
         builder:
@@ -106,9 +115,9 @@ class _MyAppState extends State<MyApp> {
               ],
             ),
       );
-    } else if (currentRow < 5) {
-      currentRow++;
-      currentCol = 0;
+    } else if (linhaAtual < 5) {
+      linhaAtual++;
+      colunaAtual = 0;
     } else {
       showDialog(
         context: context,
@@ -131,7 +140,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Color(0xFF6E5C62),
+        backgroundColor: const Color(0xFF6E5C62),
         body: SafeArea(
           child: Column(
             children: [
@@ -146,17 +155,17 @@ class _MyAppState extends State<MyApp> {
                         child: Column(
                           children: List.generate(
                             6,
-                            (row) => Expanded(
+                            (linha) => Expanded(
                               child: Row(
                                 children: List.generate(
                                   5,
-                                  (col) => Expanded(
+                                  (coluna) => Expanded(
                                     child: Padding(
                                       padding: const EdgeInsets.all(4),
-                                      child: buildConteinerLetra(
-                                        board[row][col],
-                                        row,
-                                        col,
+                                      child: construirCelulaLetra(
+                                        tabuleiro[linha][coluna],
+                                        linha,
+                                        coluna,
                                       ),
                                     ),
                                   ),
@@ -173,7 +182,7 @@ class _MyAppState extends State<MyApp> {
               const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.only(bottom: 20),
-                child: buildTecladoPC(),
+                child: construirTeclado(),
               ),
             ],
           ),
@@ -182,10 +191,13 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  Widget buildConteinerLetra(LetraCelula celula, int row, int col) {
-    Color corFundo = celula.cor;
-    if (row == currentRow && celula.letra.isEmpty) {
-      corFundo = const Color(0xFF87727A);
+  // Constrói cada célula do tabuleiro
+  Widget construirCelulaLetra(CelulaLetra celula, int linha, int coluna) {
+    Color corFundo = celula.corFundo;
+    if (linha == linhaAtual && celula.letra.isEmpty) {
+      corFundo = const Color(
+        0xFF87727A,
+      ); // Destaque para a próxima célula editável
     }
 
     return Container(
@@ -202,16 +214,17 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  Widget buildTecladoPC() {
+  // Constrói o teclado inferior com as letras e botões especiais
+  Widget construirTeclado() {
     final linha1 = 'QWERTYUIOP'.split('');
     final linha2 = [...'ASDFGHJKL'.split(''), '⌫'];
     final linha3 = [...'ZXCVBNM'.split(''), 'ENTER'];
 
-    Widget buildLinha(List<String> letras) {
+    Widget construirLinhaTeclas(List<String> teclas) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children:
-            letras.map((letra) {
+            teclas.map((letra) {
               final bool especial = letra == 'ENTER' || letra == '⌫';
               return Expanded(
                 flex: especial ? 2 : 1,
@@ -223,7 +236,7 @@ class _MyAppState extends State<MyApp> {
                   child: SizedBox(
                     height: 44,
                     child: ElevatedButton(
-                      onPressed: () => teclaPressionada(letra),
+                      onPressed: () => aoPressionarTecla(letra),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.grey.shade800,
                         foregroundColor: Colors.white,
@@ -244,11 +257,11 @@ class _MyAppState extends State<MyApp> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        buildLinha(linha1),
+        construirLinhaTeclas(linha1),
         const SizedBox(height: 6),
-        buildLinha(linha2),
+        construirLinhaTeclas(linha2),
         const SizedBox(height: 6),
-        buildLinha(linha3),
+        construirLinhaTeclas(linha3),
       ],
     );
   }
