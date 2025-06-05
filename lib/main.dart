@@ -5,7 +5,6 @@ void main() {
   runApp(const MaterialApp(home: MeuApp(), debugShowCheckedModeBanner: false));
 }
 
-// Classe principal do app com estado (StatefulWidget)
 class MeuApp extends StatefulWidget {
   const MeuApp({super.key});
 
@@ -13,7 +12,7 @@ class MeuApp extends StatefulWidget {
   State<MeuApp> createState() => _MeuAppEstado();
 }
 
-// Representa uma célula com uma letra e suas cores
+// Classe
 class CelulaLetra {
   String letra;
   Color corFundo;
@@ -26,12 +25,12 @@ class _MeuAppEstado extends State<MeuApp> {
   final String palavraSorteada = sortearPalavra();
   late List<String> letrasSorteadasSeparadas;
 
-  // Tabuleiro: 6 linhas x 5 colunas, cada célula é uma letra com cor de fundo e borda
+  // Lista de CelulaLetra de 6x5 para verificar os atributos inseridos e também gerar o tabuleiro 
   List<List<CelulaLetra>> tabuleiro = List.generate(
     6,
     (_) => List.generate(
       5,
-      (_) => CelulaLetra('', const Color(0xFF605458), const Color(0xFF605458)),
+      (_) => CelulaLetra('', const Color(0xFF605458), const Color(0xFF605458)), // No primeiro init, carrega vazia e com as corres definidas aqui
     ),
   );
 
@@ -86,7 +85,7 @@ class _MeuAppEstado extends State<MeuApp> {
     List<String> copiaPalavra = List.from(letrasSorteadasSeparadas);
     List<Color> cores = List.filled(5, const Color(0xFF302A2C));
 
-    // Marca letras corretas na posição correta (verde)
+    // Verifica e marca a posição da letra na que está na casa correta (verde)
     for (int i = 0; i < 5; i++) {
       if (tentativa[i] == copiaPalavra[i]) {
         cores[i] = const Color(0xFF4BA294);
@@ -94,7 +93,7 @@ class _MeuAppEstado extends State<MeuApp> {
       }
     }
 
-    // Marca letras corretas na posição errada (amarelo)
+    // Letra correta, porem na posição errada (amarelo)
     for (int i = 0; i < 5; i++) {
       if (cores[i] != const Color(0xFF4BA294) &&
           copiaPalavra.contains(tentativa[i])) {
@@ -211,7 +210,7 @@ class _MeuAppEstado extends State<MeuApp> {
     );
   }
 
-  /// Constrói cada célula do tabuleiro, destacando a próxima célula editável.
+  // Faz o build do container onde fica as letras
   Widget construirCelulaLetra(CelulaLetra celula, int linha, int coluna) {
     Color corFundo = celula.corFundo;
     if (linha == linhaAtual && celula.letra.isEmpty) {
@@ -234,8 +233,8 @@ class _MeuAppEstado extends State<MeuApp> {
     );
   }
 
-  /// Constrói o teclado virtual inferior.
-  /// O teclado é desabilitado quando o jogo termina.
+  // Constrói o teclado virtual inferior.
+  // O teclado é desabilitado quando o jogo termina.
   Widget construirTeclado() {
     final linha1 = 'QWERTYUIOP'.split('');
     final linha2 = [...'ASDFGHJKL'.split(''), '⌫'];
