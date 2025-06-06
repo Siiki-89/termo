@@ -20,8 +20,6 @@ Nenhuma dependência externa além do Flutter SDK.
 
 ---
 
-## 📝 Relatório
-
 ### 🎯 Objetivo do Jogo
 Criar um jogo interativo no estilo **Termo**, onde o jogador deve adivinhar uma palavra de 5 letras em até 6 tentativas. Após cada tentativa, o jogo indica letras corretas (verde), letras presentes em posição errada (amarelo) e letras ausentes (cinza).
 
@@ -51,4 +49,4 @@ Criar um jogo interativo no estilo **Termo**, onde o jogador deve adivinhar uma 
 - Fortalecimento na manipulação de **listas**, **métodos auxiliares** e **componentização de widgets**.
 - Entendimento melhor de **como construir interfaces interativas** com Flutter.
 
-![alt text](image.png)
+                                                                                                               ![alt text](image.png)
