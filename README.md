@@ -49,4 +49,4 @@ Criar um jogo interativo no estilo **Termo**, onde o jogador deve adivinhar uma 
 - Fortalecimento na manipulação de **listas**, **métodos auxiliares** e **componentização de widgets**.
 - Entendimento melhor de **como construir interfaces interativas** com Flutter.
 
-                                                                                                               ![alt text](image.png)
+![alt text](image.png)
