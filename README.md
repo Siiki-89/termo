@@ -1,16 +1,54 @@
-# termo
+# 🎮 Jogo Termo em Flutter
 
-A new Flutter project.
+## 📁 Código Fonte
 
-## Getting Started
+**Requisitos:**
+- Flutter instalado (versão 3.0 ou superior recomendada)
+- Editor recomendado: VS Code ou Android Studio
 
-This project is a starting point for a Flutter application.
+**Dependências:**
+Nenhuma dependência externa além do Flutter SDK.
 
-A few resources to get you started if this is your first Flutter project:
+**Como executar o projeto:**
+1. Clone ou baixe o projeto.
+2. Coloque o arquivo `dicionario.dart` no diretório `lib/` contendo a função `sortearPalavra()` que retorna uma palavra aleatória de 5 letras em maiúsculo.
+3. No terminal, acesse o diretório do projeto e execute:
+   ```bash
+   flutter pub get
+   flutter run
+   ```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 📝 Relatório
+
+### 🎯 Objetivo do Jogo
+Criar um jogo interativo no estilo **Termo**, onde o jogador deve adivinhar uma palavra de 5 letras em até 6 tentativas. Após cada tentativa, o jogo indica letras corretas (verde), letras presentes em posição errada (amarelo) e letras ausentes (cinza).
+
+---
+
+### 🔧 Principais Funcionalidades
+
+- **Tabuleiro 6x5:** exibe as tentativas com cores de feedback.
+- **Teclado virtual integrado:** entrada das letras, backspace e enter.
+- **Validação de tentativa:** compara com a palavra sorteada.
+- **Mensagens de vitória ou derrota:** exibidas com `AlertDialog`.
+
+---
+
+### 🧱 Desafios Enfrentados
+
+- **Gerenciamento de estado por linha e coluna:** controlar onde o usuário digita, apaga ou confirma.
+- **Lógica de comparação de letras com repetição:** para tratar corretamente acertos e posições erradas.
+- **Interface responsiva e intuitiva:** organização de layouts para diferentes tamanhos de tela.
+
+---
+
+### 📘 Conclusões e Aprendizados
+
+- Prática com **StatefulWidget** e **setState** para atualização dinâmica.
+- Uso de **cores personalizadas** para representar estados do jogo.
+- Fortalecimento na manipulação de **listas**, **métodos auxiliares** e **componentização de widgets**.
+- Entendimento melhor de **como construir interfaces interativas** com Flutter.
+
+![alt text](image.png)
